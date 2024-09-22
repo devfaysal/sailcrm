@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Lead extends Model
 {
+    protected $guarded = [];
+
     protected function casts(): array
     {
         return [
@@ -16,7 +18,7 @@ class Lead extends Model
         ];
     }
 
-    public function territorty(): BelongsTo
+    public function territory(): BelongsTo
     {
         return $this->belongsTo(Territory::class);
     }
