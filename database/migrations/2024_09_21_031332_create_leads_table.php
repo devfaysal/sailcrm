@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('post_code')->nullable();
             $table->string('address')->nullable();
-            $table->string('union')->nullable();
-            $table->string('upazila')->nullable();
-            $table->string('district')->nullable();
-            $table->string('division')->nullable();
+            $table->string('union_id')->nullable();
+            $table->string('upazila_id')->nullable();
+            $table->string('district_id')->nullable();
+            $table->string('division_id')->nullable();
             $table->boolean('is_customer')->default(false);
             $table->timestamps();
         });

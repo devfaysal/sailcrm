@@ -30,5 +30,11 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
+        $this->call([
+            \Devfaysal\BangladeshGeocode\Seeders\DivisionSeeder::class,
+            \Devfaysal\BangladeshGeocode\Seeders\DistrictSeeder::class,
+            \Devfaysal\BangladeshGeocode\Seeders\UpazilaSeeder::class,
+            \Devfaysal\BangladeshGeocode\Seeders\UnionSeeder::class,
+        ]);
     }
 }

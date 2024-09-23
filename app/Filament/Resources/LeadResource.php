@@ -28,11 +28,38 @@ class LeadResource extends Resource
         return $form
             ->schema([
                 Select::make('territory_id')
-                    ->relationship('territory', 'name'),
+                    ->relationship('territory', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Select::make('type')
-                    ->options(LeadType::class),
+                    ->options(LeadType::class)
+                    ->required(),
                 TextInput::make('name')
                     ->required(),
+                TextInput::make('shop_name'),
+                TextInput::make('phone_number')
+                    ->required(),
+                TextInput::make('post_code')
+                    ->required(),
+                TextInput::make('address')
+                    ->required(),
+                Select::make('union_id')
+                    ->relationship('union', 'name')
+                    ->searchable()
+                    ->preload(),
+                Select::make('upazila_id')
+                    ->relationship('upazila', 'name')
+                    ->searchable()
+                    ->preload(),
+                Select::make('district_id')
+                    ->relationship('district', 'name')
+                    ->searchable()
+                    ->preload(),
+                Select::make('division_id')
+                    ->relationship('division', 'name')
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 
@@ -42,7 +69,25 @@ class LeadResource extends Resource
             ->columns([
                 TextColumn::make('territory.name')
                     ->searchable(),
+                TextColumn::make('type')
+                    ->searchable(),
                 TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('shop_name')
+                    ->searchable(),
+                TextColumn::make('phone_number')
+                    ->searchable(),
+                TextColumn::make('post_code')
+                    ->searchable(),
+                TextColumn::make('address')
+                    ->searchable(),
+                TextColumn::make('union.name')
+                    ->searchable(),
+                TextColumn::make('upazila.name')
+                    ->searchable(),
+                TextColumn::make('district.name')
+                    ->searchable(),
+                TextColumn::make('division.name')
                     ->searchable(),
             ])
             ->filters([
