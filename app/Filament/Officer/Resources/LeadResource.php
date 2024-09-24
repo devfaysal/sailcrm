@@ -5,6 +5,7 @@ namespace App\Filament\Officer\Resources;
 use App\Enums\LeadType;
 use App\Filament\Officer\Resources\LeadResource\Pages;
 use App\Filament\Officer\Resources\LeadResource\RelationManagers;
+use App\Filament\Officer\Resources\LeadResource\RelationManagers\VisitsRelationManager;
 use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -12,10 +13,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LeadResource extends Resource
 {
@@ -32,10 +33,6 @@ class LeadResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('territory_id')
-                    ->relationship('territory', 'name')
-                    ->default(auth()->user()->territory->id)
-                    ->required(),
                 Select::make('type')
                     ->options(LeadType::class)
                     ->required(),
@@ -43,7 +40,9 @@ class LeadResource extends Resource
                     ->required(),
                 TextInput::make('shop_name'),
                 TextInput::make('phone_number')
-                    ->required(),
+                    ->required()
+                    ->length(11)
+                    ->unique('leads'),
                 TextInput::make('post_code')
                     ->required(),
                 TextInput::make('address')
@@ -71,8 +70,6 @@ class LeadResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('territory.name')
-                    ->searchable(),
                 TextColumn::make('type')
                     ->searchable(),
                 TextColumn::make('name')
@@ -82,23 +79,30 @@ class LeadResource extends Resource
                 TextColumn::make('phone_number')
                     ->searchable(),
                 TextColumn::make('post_code')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('union.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('upazila.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('district.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('division.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -110,7 +114,7 @@ class LeadResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VisitsRelationManager::class,
         ];
     }
 
@@ -119,6 +123,7 @@ class LeadResource extends Resource
         return [
             'index' => Pages\ListLeads::route('/'),
             'create' => Pages\CreateLead::route('/create'),
+            'view' => Pages\ViewLead::route('/{record}'),
             'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
     }

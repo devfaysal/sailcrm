@@ -39,7 +39,9 @@ class LeadResource extends Resource
                     ->required(),
                 TextInput::make('shop_name'),
                 TextInput::make('phone_number')
-                    ->required(),
+                    ->required()
+                    ->length(11)
+                    ->unique('leads'),
                 TextInput::make('post_code')
                     ->required(),
                 TextInput::make('address')
@@ -78,17 +80,23 @@ class LeadResource extends Resource
                 TextColumn::make('phone_number')
                     ->searchable(),
                 TextColumn::make('post_code')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('union.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('upazila.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextColumn::make('district.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('division.name')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
