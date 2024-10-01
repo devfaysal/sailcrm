@@ -2,11 +2,15 @@
 
 namespace App\Filament\Officer\Resources\LeadResource\RelationManagers;
 
+use App\Models\Crop;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,15 +23,19 @@ class VisitsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                TextInput::make('crop')
-                    ->required()
-                    ->maxLength(255),
+                Select::make('crop_id')
+                    ->label('Crop')
+                    ->placeholder('Select Crop')
+                    ->options(Crop::pluck('name', 'id'))
+                    ->searchable(),
                 TextInput::make('problem')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 TextInput::make('solution')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
+                DatePicker::make('visited_at')
+                    ->placeholder('Select Date')
+                    ->native(false)
+                    ->required(),
             ]);
     }
 
@@ -36,7 +44,10 @@ class VisitsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('crop')
             ->columns([
-                Tables\Columns\TextColumn::make('crop'),
+                TextColumn::make('crop.name'),
+                TextColumn::make('problem'),
+                TextColumn::make('solution'),
+                TextColumn::make('visited_at'),
             ])
             ->filters([
                 //

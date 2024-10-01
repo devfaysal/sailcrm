@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TerritoryResource\Pages;
-use App\Filament\Resources\TerritoryResource\RelationManagers;
-use App\Models\Territory;
+use App\Filament\Resources\CropResource\Pages;
+use App\Filament\Resources\CropResource\RelationManagers;
+use App\Models\Crop;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,9 +15,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TerritoryResource extends Resource
+class CropResource extends Resource
 {
-    protected static ?string $model = Territory::class;
+    protected static ?string $model = Crop::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -28,13 +27,6 @@ class TerritoryResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required(),
-                Select::make('user_id')
-                    ->relationship('officer', 'name'),
-                Select::make('district_id')
-                    ->searchable()
-                    ->preload()
-                    ->relationship('district', 'name'),
-                
             ]);
     }
 
@@ -43,17 +35,6 @@ class TerritoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('officer.name')
-                    ->searchable(),
-                TextColumn::make('officer.phone_number')
-                    ->label('Phone Number')
-                    ->searchable(),
-                TextColumn::make('district.name')
-                    ->label('District')
-                    ->searchable(),
-                TextColumn::make('division.name')
-                    ->label('Division')
                     ->searchable(),
             ])
             ->filters([
@@ -79,9 +60,9 @@ class TerritoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTerritories::route('/'),
-            'create' => Pages\CreateTerritory::route('/create'),
-            'edit' => Pages\EditTerritory::route('/{record}/edit'),
+            'index' => Pages\ListCrops::route('/'),
+            'create' => Pages\CreateCrop::route('/create'),
+            'edit' => Pages\EditCrop::route('/{record}/edit'),
         ];
     }
 }

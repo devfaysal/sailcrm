@@ -6,8 +6,14 @@ use App\Enums\LeadType;
 use App\Filament\Officer\Resources\LeadResource\Pages;
 use App\Filament\Officer\Resources\LeadResource\RelationManagers;
 use App\Filament\Officer\Resources\LeadResource\RelationManagers\VisitsRelationManager;
+use App\Models\Crop;
 use App\Models\Lead;
+use Devfaysal\BangladeshGeocode\Models\Union;
+use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -42,27 +48,53 @@ class LeadResource extends Resource
                 TextInput::make('phone_number')
                     ->required()
                     ->length(11)
-                    ->unique('leads'),
-                TextInput::make('post_code')
-                    ->required(),
+                    ->unique('leads', 'phone_number', ignorable: fn($record) => $record),
+                Select::make('upazila_id')
+                    ->required()
+                    ->options(Upazila::where('district_id', auth()->user()->territory->district_id)->pluck('name','id'))
+                    ->searchable()
+                    ->preload()
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set) {
+                        $set('union_id', null);
+                    }),
+                Select::make('union_id')
+                    ->placeholder('Select Union')
+                    ->options(function (callable $get) {
+                        $upazilaId = $get('upazila_id');
+                        if ($upazilaId) {
+                            return Union::where('upazila_id', $upazilaId)->pluck('name', 'id');
+                        }
+                        return [];
+                    })
+                    ->searchable()
+                    ->reactive()
+                    ->preload()
+                    ->disabled(function (callable $get) {
+                        return empty($get('upazila_id'));
+                    }),
                 TextInput::make('address')
                     ->required(),
-                Select::make('union_id')
-                    ->relationship('union', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('upazila_id')
-                    ->relationship('upazila', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('district_id')
-                    ->relationship('district', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('division_id')
-                    ->relationship('division', 'name')
-                    ->searchable()
-                    ->preload(),
+                TextInput::make('post_code')
+                    ->required(),
+                Section::make('Solutions')
+                    ->visible(fn($record) => !$record)
+                    ->columns(2)
+                    ->schema([
+                        Select::make('crop_id')
+                            ->label('Crop')
+                            ->placeholder('Select Crop')
+                            ->options(Crop::pluck('name', 'id'))
+                            ->searchable(),
+                        TextInput::make('problem')
+                            ->required(),
+                        TextInput::make('solution')
+                            ->required(),
+                        DatePicker::make('visited_at')
+                            ->placeholder('Select Date')
+                            ->native(false)
+                            ->required(),
+                    ])
             ]);
     }
 
