@@ -15,12 +15,15 @@ class CreateLead extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+        $territory = auth()->user()->territory;
         $lead = Lead::create([
-            'territory_id' => auth()->user()->territory->id,
+            'territory_id' => $territory->id,
             'type' => $data['type'],
             'name' => $data['name'],
             'shop_name' => $data['shop_name'],
             'phone_number' => $data['phone_number'],
+            'division_id' => $territory->division_id,
+            'district_id' => $territory->district_id,
             'upazila_id' => $data['upazila_id'],
             'union_id' => $data['union_id'],
             'address' => $data['address'],

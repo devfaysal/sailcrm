@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id');
-            $table->string('district_id')->nullable();
             $table->string('division_id')->nullable();
+            $table->string('district_id')->nullable();
             $table->timestamps();
         });
     }
