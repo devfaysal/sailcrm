@@ -6,6 +6,12 @@ use App\Models\Admin;
 use App\Models\Crop;
 use App\Models\Territory;
 use App\Models\User;
+use Database\Seeders\ProblemSeeder;
+use Database\Seeders\ProductSeeder;
+use Devfaysal\BangladeshGeocode\Seeders\DistrictSeeder;
+use Devfaysal\BangladeshGeocode\Seeders\DivisionSeeder;
+use Devfaysal\BangladeshGeocode\Seeders\UnionSeeder;
+use Devfaysal\BangladeshGeocode\Seeders\UpazilaSeeder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -18,10 +24,12 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            \Devfaysal\BangladeshGeocode\Seeders\DivisionSeeder::class,
-            \Devfaysal\BangladeshGeocode\Seeders\DistrictSeeder::class,
-            \Devfaysal\BangladeshGeocode\Seeders\UpazilaSeeder::class,
-            \Devfaysal\BangladeshGeocode\Seeders\UnionSeeder::class,
+            DivisionSeeder::class,
+            DistrictSeeder::class,
+            UpazilaSeeder::class,
+            UnionSeeder::class,
+            ProductSeeder::class,
+            ProblemSeeder::class,
         ]);
         Crop::insert([
             ['name' => 'Rice'],

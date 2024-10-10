@@ -8,6 +8,8 @@ use App\Filament\Officer\Resources\LeadResource\RelationManagers;
 use App\Filament\Officer\Resources\LeadResource\RelationManagers\VisitsRelationManager;
 use App\Models\Crop;
 use App\Models\Lead;
+use App\Models\Problem;
+use App\Models\Product;
 use Devfaysal\BangladeshGeocode\Models\Union;
 use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Filament\Forms;
@@ -86,9 +88,15 @@ class LeadResource extends Resource
                             ->placeholder('Select Crop')
                             ->options(Crop::pluck('name', 'id'))
                             ->searchable(),
-                        TextInput::make('problem')
+                        Select::make('problem')
+                            ->placeholder('Select a problem')
+                            ->options(Problem::pluck('name'))
+                            ->searchable()
                             ->required(),
-                        TextInput::make('solution')
+                        Select::make('solution')
+                            ->placeholder('Select one or more soltions')
+                            ->multiple()
+                            ->options(Product::pluck('name'))
                             ->required(),
                         DatePicker::make('visited_at')
                             ->placeholder('Select Date')
