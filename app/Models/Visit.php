@@ -9,6 +9,13 @@ class Visit extends Model
 {
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'solution' => 'array',
+        ];
+    }
+
     public function crop():BelongsTo
     {
         return $this->belongsTo(Crop::class);

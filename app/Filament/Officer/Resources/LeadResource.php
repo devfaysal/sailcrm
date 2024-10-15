@@ -90,13 +90,13 @@ class LeadResource extends Resource
                             ->searchable(),
                         Select::make('problem')
                             ->placeholder('Select a problem')
-                            ->options(Problem::pluck('name'))
+                            ->options(Problem::pluck('name', 'name'))
                             ->searchable()
                             ->required(),
                         Select::make('solution')
                             ->placeholder('Select one or more soltions')
                             ->multiple()
-                            ->options(Product::pluck('name'))
+                            ->options(Product::pluck('name', 'name'))
                             ->required(),
                         DatePicker::make('visited_at')
                             ->placeholder('Select Date')
