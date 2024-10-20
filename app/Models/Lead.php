@@ -10,9 +10,13 @@ use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Lead extends Model
+class Lead extends Model implements HasMedia
 {
+    use InteractsWithMedia;
+    
     protected $guarded = [];
 
     protected function casts(): array
@@ -20,6 +24,12 @@ class Lead extends Model
         return [
             'type' => LeadType::class,
         ];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('picture')
+            ->singleFile();
     }
 
     public function territory(): BelongsTo

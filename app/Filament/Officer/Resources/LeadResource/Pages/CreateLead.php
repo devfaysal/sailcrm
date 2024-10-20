@@ -15,6 +15,7 @@ class CreateLead extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+        // dd($data);
         $territory = auth()->user()->territory;
         $lead = Lead::create([
             'territory_id' => $territory->id,
@@ -30,14 +31,18 @@ class CreateLead extends CreateRecord
             'post_code' => $data['address'],
         ]);
 
-        Visit::create([
-            'lead_id' => $lead->id,
-            'crop_id' => $data['crop_id'],
-            'problem' => $data['problem'],
-            'solution' => $data['solution'],
-            'visited_at' => $data['visited_at'],
-        ]);
-
+        if(count($data['Solutions'])){
+            foreach ($data['Solutions'] as $solution) {
+                Visit::create([
+                    'lead_id' => $lead->id,
+                    'crop_id' => $solution['crop_id'],
+                    'problem' => $solution['problem'],
+                    'solution' => $solution['solution'],
+                    'visited_at' => $solution['visited_at'],
+                ]);
+            }
+        }
+        
         return $lead;
     }
 }

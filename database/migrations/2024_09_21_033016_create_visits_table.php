@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('crop_id')->nullable();
             $table->string('problem')->nullable();
             $table->text('solution')->nullable();
+            $table->text('location')->nullable();
             $table->dateTime('visited_at');
             $table->timestamps();
         });

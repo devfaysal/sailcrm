@@ -15,8 +15,10 @@ use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -75,33 +77,36 @@ class LeadResource extends Resource
                     ->disabled(function (callable $get) {
                         return empty($get('upazila_id'));
                     }),
-                TextInput::make('address')
-                    ->required(),
-                TextInput::make('post_code')
-                    ->required(),
-                Section::make('Solutions')
+                TextInput::make('address'),
+                TextInput::make('post_code'),
+                SpatieMediaLibraryFileUpload::make('picture')
+                    ->collection('picture'),
+                Section::make('Farmer Visits')
                     ->visible(fn($record) => !$record)
-                    ->columns(2)
                     ->schema([
-                        Select::make('crop_id')
-                            ->label('Crop')
-                            ->placeholder('Select Crop')
-                            ->options(Crop::pluck('name', 'id'))
-                            ->searchable(),
-                        Select::make('problem')
-                            ->placeholder('Select a problem')
-                            ->options(Problem::pluck('name', 'name'))
-                            ->searchable()
-                            ->required(),
-                        Select::make('solution')
-                            ->placeholder('Select one or more soltions')
-                            ->multiple()
-                            ->options(Product::pluck('name', 'name'))
-                            ->required(),
-                        DatePicker::make('visited_at')
-                            ->placeholder('Select Date')
-                            ->native(false)
-                            ->required(),
+                        Repeater::make('solutions')
+                            ->schema([
+                                Select::make('crop_id')
+                                ->label('Crop')
+                                ->placeholder('Select Crop')
+                                ->options(Crop::pluck('name', 'id'))
+                                ->searchable(),
+                                Select::make('problem')
+                                ->placeholder('Select a problem')
+                                ->options(Problem::pluck('name', 'name'))
+                                ->searchable()
+                                ->required(),
+                                Select::make('solution')
+                                ->placeholder('Select one or more soltions')
+                                ->multiple()
+                                ->options(Product::pluck('name', 'name'))
+                                ->required(),
+                                DatePicker::make('visited_at')
+                                ->placeholder('Select Date')
+                                ->native(false)
+                                ->required(),
+                            ])
+                            ->columns(2),
                     ])
             ]);
     }
