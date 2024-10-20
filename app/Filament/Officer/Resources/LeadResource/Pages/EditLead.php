@@ -21,7 +21,7 @@ class EditLead extends EditRecord
             'upazila_id' => $data['upazila_id'],
             'union_id' => $data['union_id'],
             'address' => $data['address'],
-            'post_code' => $data['address'],
+            'post_code' => $data['post_code'],
         ]);
         return $record;
     }

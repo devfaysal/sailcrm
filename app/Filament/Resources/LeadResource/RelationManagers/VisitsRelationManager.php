@@ -1,15 +1,9 @@
 <?php
 
-namespace App\Filament\Officer\Resources\LeadResource\RelationManagers;
+namespace App\Filament\Resources\LeadResource\RelationManagers;
 
-use App\Models\Crop;
-use App\Models\Problem;
-use App\Models\Product;
 use App\Traits\LeadFields;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;

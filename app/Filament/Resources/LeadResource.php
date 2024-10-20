@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Enums\LeadType;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
+use App\Filament\Resources\LeadResource\RelationManagers\VisitsRelationManager;
 use App\Models\Lead;
+use App\Traits\LeadFields;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -19,6 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LeadResource extends Resource
 {
+    use LeadFields;
+
     protected static ?string $model = Lead::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -26,43 +30,7 @@ class LeadResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Select::make('territory_id')
-                    ->relationship('territory', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Select::make('type')
-                    ->options(LeadType::class)
-                    ->required(),
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('shop_name'),
-                TextInput::make('phone_number')
-                    ->required()
-                    ->length(11)
-                    ->unique('leads'),
-                TextInput::make('post_code')
-                    ->required(),
-                TextInput::make('address')
-                    ->required(),
-                Select::make('union_id')
-                    ->relationship('union', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('upazila_id')
-                    ->relationship('upazila', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('district_id')
-                    ->relationship('district', 'name')
-                    ->searchable()
-                    ->preload(),
-                Select::make('division_id')
-                    ->relationship('division', 'name')
-                    ->searchable()
-                    ->preload(),
-            ]);
+            ->schema(self::getFields(admin: true));
     }
 
     public static function table(Table $table): Table
@@ -114,7 +82,7 @@ class LeadResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            VisitsRelationManager::class,
         ];
     }
 
