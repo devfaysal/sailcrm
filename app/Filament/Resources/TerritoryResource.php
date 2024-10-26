@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TerritoryResource\Pages;
 use App\Filament\Resources\TerritoryResource\RelationManagers;
 use App\Models\Territory;
+use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -29,11 +30,14 @@ class TerritoryResource extends Resource
                 TextInput::make('name')
                     ->required(),
                 Select::make('user_id')
-                    ->relationship('officer', 'name'),
-                Select::make('district_id')
                     ->searchable()
                     ->preload()
-                    ->relationship('district', 'name'),
+                    ->relationship('officer', 'name'),
+                Select::make('areas')
+                    ->placeholder('Select areas')
+                    ->multiple()
+                    ->options(Upazila::pluck('name', 'id'))
+                    ->required(),
                 
             ]);
     }
@@ -48,12 +52,6 @@ class TerritoryResource extends Resource
                     ->searchable(),
                 TextColumn::make('officer.phone_number')
                     ->label('Phone Number')
-                    ->searchable(),
-                TextColumn::make('district.name')
-                    ->label('District')
-                    ->searchable(),
-                TextColumn::make('division.name')
-                    ->label('Division')
                     ->searchable(),
             ])
             ->filters([

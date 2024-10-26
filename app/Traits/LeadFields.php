@@ -18,6 +18,7 @@ trait LeadFields
 {
     public static function getFields($admin = false)
     {
+        $upazilaList = $admin ? Upazila::pluck('name', 'id') : Upazila::whereIn('id', auth()->user()->territory->areas)->pluck('name', 'id');
         $fields = [
             Select::make('type')
                 ->options(LeadType::class)
@@ -31,7 +32,7 @@ trait LeadFields
                 ->unique('leads', 'phone_number', ignorable: fn($record) => $record),
             Select::make('upazila_id')
                 ->required()
-                ->options(Upazila::pluck('name', 'id'))
+                ->options($upazilaList)
                 ->searchable()
                 ->preload()
                 ->reactive()

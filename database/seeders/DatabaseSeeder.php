@@ -43,20 +43,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
         ]);
-        $officer = User::create([
-            'name' => 'John Doe',
-            'email' => 'officer@surovigroup.net',
-            'phone_number' => '01670347708',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'remember_token' => Str::random(10),
-        ]);
-
-        Territory::create([
-            'name' => 'Kishoreganj',
-            'user_id' => $officer->id,
-            'division_id' => 6, //Dhaka
-            'district_id' => 45, //Kishoreganj
-        ]);
+        $this->call(UserSeeder::class);
     }
 }

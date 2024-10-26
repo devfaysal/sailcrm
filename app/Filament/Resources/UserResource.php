@@ -46,7 +46,7 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')
                     ->searchable(),
-                TextColumn::make('email')
+                TextColumn::make('territory.name')
                     ->searchable(),
                 TextColumn::make('phone_number')
                     ->searchable(),
