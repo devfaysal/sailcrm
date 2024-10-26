@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Officer\Pages\EditProfile;
 use App\Filament\Officer\Pages\OfficerLogin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,6 +28,7 @@ class OfficerPanelProvider extends PanelProvider
             ->id('officer')
             ->path('/')
             ->login(OfficerLogin::class)
+            ->profile(EditProfile::class)
             ->colors([
                 'primary' => Color::Cyan,
             ])
