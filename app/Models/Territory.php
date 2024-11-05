@@ -15,6 +15,7 @@ class Territory extends Model
     protected function casts(): array
     {
         return [
+            'districts' => 'array',
             'areas' => 'array',
         ];
     }

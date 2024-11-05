@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TerritoryResource\Pages;
 use App\Filament\Resources\TerritoryResource\RelationManagers;
 use App\Models\Territory;
+use Devfaysal\BangladeshGeocode\Models\District;
 use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
@@ -33,12 +34,26 @@ class TerritoryResource extends Resource
                     ->searchable()
                     ->preload()
                     ->relationship('officer', 'name'),
+                Select::make('districts')
+                    ->placeholder('Select districts')
+                    ->multiple()
+                    ->options(District::pluck('name', 'id'))
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function (callable $set) {
+                        $set('areas', null);
+                    }),
                 Select::make('areas')
                     ->placeholder('Select areas')
+                    ->options(function (callable $get) {
+                        $districtIds = $get('districts');
+                        if (count($districtIds) > 0) {
+                            return Upazila::whereIn('district_id', $districtIds)->pluck('name', 'id');
+                        }
+                        return [];
+                    })
                     ->multiple()
-                    ->options(Upazila::pluck('name', 'id'))
-                    ->required(),
-                
+                    ->preload(),
             ]);
     }
 
