@@ -1,6 +1,11 @@
 <?php
 
+use App\Models\Crop;
+use App\Models\Problem;
+use App\Models\Product;
 use App\Models\User;
+use Devfaysal\BangladeshGeocode\Models\Union;
+use Devfaysal\BangladeshGeocode\Models\Upazila;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -42,3 +47,36 @@ Route::get('/user', function (Request $request) {
         ->first();
     return response()->json($user);
 })->middleware('auth:sanctum');
+
+Route::get('/leads', function (Request $request) {
+    $user = $request->user()->territory->leads;
+    return response()->json($user);
+})->middleware('auth:sanctum');
+
+Route::get('/upazilas', function () {
+    $upazilas = Upazila::pluck('name', 'id');
+    return response()->json($upazilas);
+})->middleware('auth:sanctum');
+
+Route::get('/unions', function () {
+    $unions = Union::pluck('name', 'id');
+    return response()->json($unions);
+})->middleware('auth:sanctum');
+
+Route::get('/products', function () {
+    $products = Product::pluck('name', 'id');
+    return response()->json($products);
+})->middleware('auth:sanctum');
+
+Route::get('/problems', function () {
+    $problems = Problem::pluck('name', 'id');
+    return response()->json($problems);
+})->middleware('auth:sanctum');
+
+Route::get('/crops', function () {
+    $crops = Crop::pluck('name', 'id');
+    return response()->json($crops);
+})->middleware('auth:sanctum');
+
+
+

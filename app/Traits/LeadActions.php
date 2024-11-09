@@ -9,7 +9,7 @@ trait LeadActions
 {
     public function createLeadAction(array $data)
     {
-        if($data['territory_id']){
+        if(isset($data['territory_id'])){
             $territory = Territory::find($data['territory_id']);
         }else{
             $territory = auth()->user()->territory;

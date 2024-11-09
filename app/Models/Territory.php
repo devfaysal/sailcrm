@@ -24,4 +24,9 @@ class Territory extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function leads()
+    {
+        return $this->hasMany(Lead::class);
+    }
 }
