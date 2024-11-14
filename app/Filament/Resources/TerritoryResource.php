@@ -37,7 +37,7 @@ class TerritoryResource extends Resource
                 Select::make('districts')
                     ->placeholder('Select districts')
                     ->multiple()
-                    ->options(District::pluck('name', 'id'))
+                    ->options(District::pluck('bn_name', 'id'))
                     ->required()
                     ->reactive()
                     ->afterStateUpdated(function (callable $set) {
@@ -48,7 +48,7 @@ class TerritoryResource extends Resource
                     ->options(function (callable $get) {
                         $districtIds = $get('districts');
                         if (count($districtIds) > 0) {
-                            return Upazila::whereIn('district_id', $districtIds)->pluck('name', 'id');
+                            return Upazila::whereIn('district_id', $districtIds)->pluck('bn_name', 'id');
                         }
                         return [];
                     })

@@ -66,16 +66,16 @@ class LeadResource extends Resource
                 TextColumn::make('address')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('union.name')
+                TextColumn::make('union.bn_name')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('upazila.name')
+                TextColumn::make('upazila.bn_name')
                     ->searchable()
                     ->toggleable(),
-                TextColumn::make('district.name')
+                TextColumn::make('district.bn_name')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('division.name')
+                TextColumn::make('division.bn_name')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

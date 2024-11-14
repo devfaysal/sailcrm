@@ -54,12 +54,12 @@ Route::get('/leads', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/upazilas', function () {
-    $upazilas = Upazila::pluck('name', 'id');
+    $upazilas = Upazila::pluck('bn_name', 'id');
     return response()->json($upazilas);
 })->middleware('auth:sanctum');
 
 Route::get('/unions', function () {
-    $unions = Union::pluck('name', 'id');
+    $unions = Union::pluck('bn_name', 'id');
     return response()->json($unions);
 })->middleware('auth:sanctum');
 

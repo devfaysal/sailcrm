@@ -18,7 +18,7 @@ trait LeadFields
 {
     public static function getFields($admin = false)
     {
-        $upazilaList = $admin ? Upazila::pluck('name', 'id') : Upazila::whereIn('id', auth()->user()->territory->areas)->pluck('name', 'id');
+        $upazilaList = $admin ? Upazila::pluck('bn_name', 'id') : Upazila::whereIn('id', auth()->user()->territory->areas)->pluck('bn_name', 'id');
         $fields = [
             Select::make('type')
                 ->options(LeadType::class)
@@ -44,7 +44,7 @@ trait LeadFields
                 ->options(function (callable $get) {
                     $upazilaId = $get('upazila_id');
                     if ($upazilaId) {
-                        return Union::where('upazila_id', $upazilaId)->pluck('name', 'id');
+                        return Union::where('upazila_id', $upazilaId)->pluck('bn_name', 'id');
                     }
                     return [];
                 })
