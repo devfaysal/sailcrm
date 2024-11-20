@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\LeadController;
 use App\Models\Crop;
 use App\Models\Problem;
 use App\Models\Product;
@@ -78,5 +79,6 @@ Route::get('/crops', function () {
     return response()->json($crops);
 })->middleware('auth:sanctum');
 
+Route::post('/leads/create', [LeadController::class, 'store'])->middleware('auth:sanctum');
 
 

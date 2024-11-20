@@ -1,19 +1,28 @@
 <?php
-namespace App\Traits;
 
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 use App\Models\Lead;
-use App\Models\Territory;
 use App\Models\Visit;
+use Illuminate\Http\Request;
 
-trait LeadActions
+class LeadController extends Controller
 {
-    public function createLeadAction(array $data)
+    public function store(Request $request)
     {
-        if(isset($data['territory_id'])){
-            $territory = Territory::find($data['territory_id']);
-        }else{
-            $territory = auth()->user()->territory;
-        }
+        $territory = $request->user()->territory;
+        $data = $request->validate([
+            'type' => 'required',
+            'name' => 'required',
+            'shop_name' => 'nullable',
+            'phone_number' => 'required',
+            'upazila_id' => 'required',
+            'union_id' => 'required',
+            'address' => 'required',
+            'post_code' => 'nullable',
+            'solutions' => ['required', 'array']
+        ]);
 
         $lead = Lead::create([
             'territory_id' => $territory->id,
@@ -41,6 +50,6 @@ trait LeadActions
             }
         }
 
-        return $lead;
+        return response()->json($lead->with('territory'));
     }
 }

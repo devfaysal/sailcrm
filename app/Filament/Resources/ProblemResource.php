@@ -26,6 +26,7 @@ class ProblemResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')->required(),
+                TextInput::make('type')->required(),
             ]);
     }
 
@@ -34,6 +35,8 @@ class ProblemResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('type')
                     ->searchable(),
             ])
             ->filters([
