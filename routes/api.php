@@ -59,6 +59,11 @@ Route::get('/upazilas', function () {
     return response()->json($upazilas);
 })->middleware('auth:sanctum');
 
+Route::get('/upazilas/{upazila}/unions', function (Upazila $upazila) {
+    $unions = $upazila->unions;
+    return response()->json($unions);
+})->middleware('auth:sanctum');
+
 Route::get('/unions', function () {
     $unions = Union::pluck('bn_name', 'id');
     return response()->json($unions);
