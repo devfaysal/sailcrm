@@ -49,7 +49,6 @@ class LeadController extends Controller
                 ]);
             }
         }
-
-        return response()->json($lead->with('territory'));
+        return response()->json($lead);
     }
 }
