@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ImageUploadController;
 use App\Http\Controllers\Api\LeadController;
 use App\Models\Crop;
 use App\Models\Problem;
@@ -65,7 +66,7 @@ Route::get('/upazilas/{upazila}/unions', function (Upazila $upazila) {
 })->middleware('auth:sanctum');
 
 Route::get('/unions', function () {
-    $unions = Union::pluck('bn_name', 'id');
+    $unions = Union::select('bn_name', 'id', 'upazila_id')->get();
     return response()->json($unions);
 })->middleware('auth:sanctum');
 
@@ -85,5 +86,7 @@ Route::get('/crops', function () {
 })->middleware('auth:sanctum');
 
 Route::post('/leads/create', [LeadController::class, 'store'])->middleware('auth:sanctum');
+
+Route::post('/upload-image', [ImageUploadController::class, 'store'])->middleware('auth:sanctum');
 
 

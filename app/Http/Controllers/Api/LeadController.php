@@ -21,6 +21,7 @@ class LeadController extends Controller
             'union_id' => 'required',
             'address' => 'required',
             'post_code' => 'nullable',
+            'picture' => 'nullable',
             'solutions' => ['required', 'array']
         ]);
 
@@ -38,6 +39,10 @@ class LeadController extends Controller
             'post_code' => $data['post_code'],
         ]);
 
+        if(isset($data['picture'])){
+            $lead->attachPicture($data['picture']);
+        }
+
         if (count($data['solutions'])) {
             foreach ($data['solutions'] as $solution) {
                 Visit::create([
@@ -46,9 +51,12 @@ class LeadController extends Controller
                     'problem' => $solution['problem'],
                     'solution' => $solution['solution'],
                     'visited_at' => $solution['visited_at'],
+                    'lat' => $solution['lat'],
+                    'lon' => $solution['lon'],
                 ]);
             }
         }
-        return response()->json($lead);
+
+        return response()->json($lead->fresh());
     }
 }

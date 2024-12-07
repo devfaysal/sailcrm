@@ -26,10 +26,28 @@ class Lead extends Model implements HasMedia
         ];
     }
 
+    protected $appends = ['picture'];
+
+    protected $hidden = ['media'];
+
+    protected $with = ['territory'];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('picture')
             ->singleFile();
+    }
+
+    public function getPictureAttribute()
+    {
+        return $this->getFirstMediaUrl('picture');
+    }
+
+    public function attachPicture($path)
+    {
+        $this->addMediaFromDisk($path, 'public')
+            ->preservingOriginal()
+            ->toMediaCollection('picture');
     }
 
     public function territory(): BelongsTo
