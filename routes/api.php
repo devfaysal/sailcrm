@@ -50,29 +50,25 @@ Route::get('/user', function (Request $request) {
     return response()->json($user);
 })->middleware('auth:sanctum');
 
-Route::get('/leads', function (Request $request) {
-    $user = $request->user()->territory->leads;
+Route::get('/user/data', function (Request $request) {
+    $user = User::where('id', $request->user()->id)
+        ->with('territory')
+        ->first();
+    $upazilaIds = $user->territory?->areas;
+    $upazilas = Upazila::whereIn('id', $upazilaIds)->select('id', 'bn_name')->with('unions')->get();
+    $products = Product::select('id', 'name')->get();
+    $problems = Problem::select('id', 'name')->get();
+    $crops = Crop::select('id', 'name')->get();
+    $user->products = $products;
+    $user->problems = $problems;
+    $user->crops = $crops;
+    $user->upazilas = $upazilas;
     return response()->json($user);
 })->middleware('auth:sanctum');
 
-Route::get('/upazilas', function () {
-    $upazilas = Upazila::with('unions')->select('id', 'bn_name')->get();
-    return response()->json($upazilas);
-})->middleware('auth:sanctum');
-
-Route::get('/products', function () {
-    $products = Product::select('id','name')->get();
-    return response()->json($products);
-})->middleware('auth:sanctum');
-
-Route::get('/problems', function () {
-    $problems = Problem::select('id', 'name')->get();
-    return response()->json($problems);
-})->middleware('auth:sanctum');
-
-Route::get('/crops', function () {
-    $crops = Crop::select('id', 'name')->get();
-    return response()->json($crops);
+Route::get('/leads', function (Request $request) {
+    $user = $request->user()->territory->leads;
+    return response()->json($user);
 })->middleware('auth:sanctum');
 
 Route::post('/leads/create', [LeadController::class, 'store'])->middleware('auth:sanctum');
