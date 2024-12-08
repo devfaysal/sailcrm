@@ -56,32 +56,22 @@ Route::get('/leads', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/upazilas', function () {
-    $upazilas = Upazila::pluck('bn_name', 'id');
+    $upazilas = Upazila::with('unions')->select('id', 'bn_name')->get();
     return response()->json($upazilas);
 })->middleware('auth:sanctum');
 
-Route::get('/upazilas/{upazila}/unions', function (Upazila $upazila) {
-    $unions = $upazila->unions;
-    return response()->json($unions);
-})->middleware('auth:sanctum');
-
-Route::get('/unions', function () {
-    $unions = Union::select('bn_name', 'id', 'upazila_id')->get();
-    return response()->json($unions);
-})->middleware('auth:sanctum');
-
 Route::get('/products', function () {
-    $products = Product::pluck('name', 'id');
+    $products = Product::select('id','name')->get();
     return response()->json($products);
 })->middleware('auth:sanctum');
 
 Route::get('/problems', function () {
-    $problems = Problem::pluck('name', 'id');
+    $problems = Problem::select('id', 'name')->get();
     return response()->json($problems);
 })->middleware('auth:sanctum');
 
 Route::get('/crops', function () {
-    $crops = Crop::pluck('name', 'id');
+    $crops = Crop::select('id', 'name')->get();
     return response()->json($crops);
 })->middleware('auth:sanctum');
 
